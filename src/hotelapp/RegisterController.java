@@ -5,7 +5,6 @@
  */
 package hotelapp;
 
-import Models.Guest;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -13,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
@@ -24,7 +24,7 @@ public class RegisterController implements Initializable {
     
     @FXML   private TextField nameField;
 
-    @FXML   private TextField passwordField;
+    @FXML   private PasswordField passwordField;
 
     @FXML   private Button registerButton;
 
@@ -41,14 +41,24 @@ public class RegisterController implements Initializable {
     
         public void register(ActionEvent event)
     {
-        try{
-            Guest newGuest = new Guest(this.nameField.getText(),this.passwordField.getText());
-            newGuest.setSalt();
-            newGuest.hashPassword(newGuest.getPassword(),newGuest.getSalt());
-        }
-        catch(IllegalArgumentException e)
+        SceneChanger sc = new SceneChanger();
+        if(this.nameField.getText().isEmpty() || this.passwordField.getText().isEmpty())
         {
             errorLabel.setText("You must enter a name AND Password");
+        }
+        else{
+            try{
+                Guest newGuest = new Guest(this.nameField.getText(),this.passwordField.getText());
+                newGuest.setSalt();
+                newGuest.hashPassword(newGuest.getPassword(),newGuest.getSalt());
+                newGuest.insertIntoDB();
+                sc.changeScenes(event,"FXMLDocument.fxml","Register Or Log in");
+
+            }
+            catch(Exception e)
+            {
+                errorLabel.setText(e.getMessage());
+            }
         }
     }
     

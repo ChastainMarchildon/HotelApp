@@ -1,7 +1,6 @@
 
 package hotelapp;
 
-import Models.Guest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,7 +26,7 @@ public class FXMLDocumentController implements Initializable {
     public void registerPressed(ActionEvent event) throws IOException
     {
         SceneChanger sc = new SceneChanger();
-        sc.changeScenes(event,"/Views/Register.fxml","Register a new Guest");
+        sc.changeScenes(event,"Register.fxml","Register a new Guest");
     }
     
 }
