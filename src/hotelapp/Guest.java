@@ -15,14 +15,15 @@ import java.sql.SQLException;
  * @author Owner
  */
 public class Guest {
-    private String name,password;
+    private String name,password,email;
     private byte[] salt;
     
-    public Guest(String name, String password)
+    public Guest(String name, String password,String email)
     {
         setName(name);
         getSalt();
         setPassword(password);
+        setEmail(email);
     }
 
     public String getName() {
@@ -39,6 +40,14 @@ public class Guest {
     public void setPassword(String password)
     {
         this.password=password;
+    }
+    public String getEmail()
+    {
+        return this.email;
+    }
+    public void setEmail(String email)
+    {
+        this.email=email;
     }
     
     public byte[] setSalt()
@@ -96,14 +105,14 @@ public class Guest {
         {
             conn = DriverManager.getConnection("jdbc:sqlserver://javacontacts.database.windows.net:1433;database=ContactsDB;user=chastainM@javacontacts;password=Chastain.Marchildon");
             
-            String sql = "INSERT INTO Guest(name,password) VALUES(?,?)";
+            String sql = "INSERT INTO Guest(name,password,email,salt) VALUES(?,?,?,?)";
             
             ps = conn.prepareStatement(sql);
             
             ps.setString(1, name);
             ps.setString(2, password);
-
-            
+            ps.setString(3, email);
+            ps.setBlob(4,new javax.sql.rowset.serial.SerialBlob(salt));
             ps.executeUpdate();
         }
         catch(Exception e)
@@ -118,4 +127,5 @@ public class Guest {
                 ps.close();
         }
     }
+   
 }

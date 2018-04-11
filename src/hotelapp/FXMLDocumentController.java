@@ -29,4 +29,11 @@ public class FXMLDocumentController implements Initializable {
         sc.changeScenes(event,"Register.fxml","Register a new Guest");
     }
     
+      public void loginPressed(ActionEvent event) throws IOException
+    {
+        SceneChanger sc = new SceneChanger();
+        sc.changeScenes(event,"Login.fxml","Log in");
+    }
+    
+    
 }

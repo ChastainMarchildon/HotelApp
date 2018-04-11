@@ -23,12 +23,10 @@ import javafx.scene.control.TextField;
 public class RegisterController implements Initializable {
     
     @FXML   private TextField nameField;
-
     @FXML   private PasswordField passwordField;
-
     @FXML   private Button registerButton;
-
     @FXML   private Label errorLabel;
+    @FXML   private TextField emailField;
 
 
     /**
@@ -48,7 +46,7 @@ public class RegisterController implements Initializable {
         }
         else{
             try{
-                Guest newGuest = new Guest(this.nameField.getText(),this.passwordField.getText());
+                Guest newGuest = new Guest(this.nameField.getText(),this.passwordField.getText(),this.emailField.getText());
                 newGuest.setSalt();
                 newGuest.hashPassword(newGuest.getPassword(),newGuest.getSalt());
                 newGuest.insertIntoDB();

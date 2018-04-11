@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="414.0" prefWidth="557.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="hotelapp.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="414.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hotelapp.FXMLDocumentController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="219.0" layoutY="85.0" prefHeight="414.0" prefWidth="557.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,7 +19,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="logInbutton" mnemonicParsing="false" text="Log In">
+            <Button fx:id="logInbutton" mnemonicParsing="false" onAction="#loginPressed" text="Log In">
                <font>
                   <Font size="20.0" />
                </font>
