@@ -33,12 +33,13 @@ public class RegisterController implements Initializable {
         // TODO
     }  
     
+    //Registers a new User and inserts it into the database
         public void register(ActionEvent event)
     {
         SceneChanger sc = new SceneChanger();
         if(this.nameField.getText().isEmpty() || this.passwordField.getText().isEmpty())
         {
-            errorLabel.setText("You must enter a name AND Password");
+            errorLabel.setText("You must fill all fields");
         }
         else{
             try{

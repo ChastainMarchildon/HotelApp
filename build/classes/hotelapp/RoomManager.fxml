@@ -78,16 +78,26 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Total">
+                  <Button mnemonicParsing="false" onAction="#calculateTotal" text="Calculate Total">
                      <HBox.margin>
                         <Insets left="20.0" top="30.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Label text="Total:">
+                     <HBox.margin>
+                        <Insets left="20.0" top="30.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="calculatedLabel" prefHeight="17.0" prefWidth="104.0">
+                     <HBox.margin>
+                        <Insets left="10.0" top="30.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#bookRoom" text="Submit">
+                  <Button mnemonicParsing="false" onAction="#bookRoom" text="Book Room">
                      <HBox.margin>
                         <Insets left="20.0" top="30.0" />
                      </HBox.margin>

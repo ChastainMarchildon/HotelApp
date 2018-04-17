@@ -39,6 +39,7 @@ public class LoginController implements Initializable {
         // TODO
     }    
     
+    //Connects to the db and retrieves the username,password and salt in order to confirm credentials
     public void login(ActionEvent event) throws SQLException
     {
         String email = emailField.getText();
@@ -57,6 +58,7 @@ public class LoginController implements Initializable {
             rs=s.executeQuery(sql);
             while(rs.next())
                 {
+                 
                 String hashedPassword = rs.getString("Password");
                 Blob blob = rs.getBlob("Salt");
                 int blobLength = (int) blob.length();  
@@ -68,13 +70,21 @@ public class LoginController implements Initializable {
                   SceneChanger sc = new SceneChanger();
                   sc.changeScenes(event,"RoomManager.fxml", "Book a Room");
                 }
+                else if(!hashedPassword.equals(confirmHash(password,salt)))
+                {
+                    loginLabel.setText("Invalid Password");
+                }
+            }
+            if(!rs.next())
+            {
+                loginLabel.setText("Invalid email");
             }
                 
         }
         catch(Exception e)
                 {
                     System.err.println(e.getMessage());
-                    loginLabel.setText("Invalid Username or Password");
+             
                 }
         finally
         {

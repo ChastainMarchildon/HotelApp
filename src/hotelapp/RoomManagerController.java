@@ -35,7 +35,7 @@ public class RoomManagerController implements Initializable {
     @FXML   private TextField roomSearch;
     @FXML   private DatePicker roomDate;
     @FXML   private Label bookedLabel;
-    @FXML   private Label totalLabel;
+    @FXML   private Label calculatedLabel;
     @FXML   private DatePicker roomDateTwo;
     @FXML   private TableColumn<Room, String> roomColumn;
     @FXML   private TableColumn<Room, String> addressColumn;
@@ -127,6 +127,7 @@ public class RoomManagerController implements Initializable {
         }
         catch(Exception e){
             System.err.print(e.getMessage());
+            bookedLabel.setText("That room is not available at this time.");
         }
            finally
         {
@@ -136,6 +137,15 @@ public class RoomManagerController implements Initializable {
                 ps.close();
         }
         
+    }
+    
+    public void calculateTotal()
+    {
+        Integer fromDate = roomDate.getValue().getDayOfMonth();
+        Integer toDate = roomDateTwo.getValue().getDayOfMonth();
+        float total = (toDate - fromDate)*110;
+        
+        calculatedLabel.setText(String.format("%10.2f", total));
     }
  
 }
