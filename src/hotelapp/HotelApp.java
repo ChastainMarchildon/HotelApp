@@ -5,6 +5,7 @@
  */
 package hotelapp;
 
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,37 +36,44 @@ public class HotelApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        /** Only Used to generate initial rooms
-        String[] roomNames={"Basic","Deluxe","Luxury","Exclusive"};
-        for(int i=0; i<51;i++)
-        {
-            String roomName="";
-            int beds=0;
-            if(i>=0&&i<=10){
-                roomName=roomNames[0];
-                beds=2;
-            }
-            else if(i>10&&i<=30){
-                roomName=roomNames[1];
-                beds=3;
-            }
-                 
-            else if(i>30&&i<=40){
-                roomName=roomNames[2];
-                beds=3;
-            }
-            else if(i>40&&i<=50){
-                beds=4;
-                roomName=roomNames[3];
-            }
-            Room newRoom = new Room(roomName,beds,i,"Vacant");
-            try {
-                newRoom.generateRoom();
-            } catch (SQLException ex) {
-                Logger.getLogger(HotelApp.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        //Used to generate a list of hotel rooms
+//        String[] addresses={"Toronto","New York","London","Vancouver"};
+//        String[] roomNames={"Basic","Deluxe","Luxury","Exclusive"};
+//        SecureRandom rand = new SecureRandom();
+//        for(int i=0; i<51;i++)
+//        {
+//            int city = rand.nextInt(4);
+//            String roomName="";
+//            int beds=0;
+//            String address="";
+//            if(i>=0&&i<=10){
+//                roomName=roomNames[0];
+//                beds=2;
+//                address=addresses[city];
+//            }
+//            else if(i>10&&i<=30){
+//                roomName=roomNames[1];
+//                beds=3;
+//                address=addresses[city];
+//            }
+//                 
+//            else if(i>30&&i<=40){
+//                roomName=roomNames[2];
+//                beds=3;
+//                address=addresses[city];
+//            }
+//            else if(i>40&&i<=50){
+//                beds=4;
+//                roomName=roomNames[3];
+//                address=addresses[city];
+//            }
+//            Room newRoom = new Room(roomName,beds,i,"Vacant",address);
+//            try {
+//                newRoom.generateRoom();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(HotelApp.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
-        */
+        
     }
 
-}

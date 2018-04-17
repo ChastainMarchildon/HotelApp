@@ -16,16 +16,25 @@ import java.sql.SQLException;
  * @author Owner
  */
 public class Room {
-    private String name, vacancy;
+    private String name, vacancy, address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
     private int beds,roomNumber;
     
     
-    public Room(String name, int beds,int roomNumber,String vacancy)
+    public Room(String name, int beds,int roomNumber,String vacancy,String address)
     {
         setName(name);
         setBeds(beds);
         setRoomNumber(roomNumber);
         setVacancy(vacancy);
+        setAddress(address);
                 
     }
 
@@ -86,7 +95,7 @@ public class Room {
         try{
             conn = DriverManager.getConnection("jdbc:sqlserver://javacontacts.database.windows.net:1433;database=ContactsDB;user=chastainM@javacontacts;password=Chastain.Marchildon");
 
-            String sql = "INSERT INTO Room(RoomNumber,Name,Beds,Vacant) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO Room(RoomNumber,Name,Beds,Vacant,Address) VALUES(?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
 
@@ -94,6 +103,7 @@ public class Room {
             ps.setString(2, name);
             ps.setInt(3,beds);
             ps.setString(4, vacancy);
+            ps.setString(5,address);
 
             ps.executeUpdate();
         }
@@ -110,4 +120,9 @@ public class Room {
                 ps.close();
         }
     }
+   @Override
+   public String toString()
+   {
+       return String.format("%d, %d, %d",name,roomNumber,address);
+   }
 }

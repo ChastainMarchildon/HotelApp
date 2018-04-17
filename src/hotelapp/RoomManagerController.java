@@ -8,16 +8,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.BinaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -26,46 +32,49 @@ import javafx.scene.control.Label;
  */
 public class RoomManagerController implements Initializable {
 
-    
-    @FXML   private ComboBox<String> roomComboBox;
+    @FXML   private TextField roomSearch;
     @FXML   private DatePicker roomDate;
     @FXML   private Label bookedLabel;
     @FXML   private Label totalLabel;
     @FXML   private DatePicker roomDateTwo;
+    @FXML   private TableColumn<Room, String> roomColumn;
+    @FXML   private TableColumn<Room, String> addressColumn;
+    @FXML   private TableView<Room> roomTable;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            generateComboBox();
+            this.roomColumn.setCellValueFactory(new PropertyValueFactory<Room,String>("Name"));
+            this.addressColumn.setCellValueFactory(new PropertyValueFactory<Room,String>("Address"));
+            generateList();
         } catch (SQLException ex) {
             Logger.getLogger(RoomManagerController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
     
-    public void generateComboBox() throws SQLException
+    public void generateList() throws SQLException
     {
         Connection conn = null;
         Statement s = null;
         ResultSet rs = null;
+        ObservableList<Room> rooms = FXCollections.observableArrayList();
         try{
-            ObservableList<Room> rooms = FXCollections.observableArrayList();
             conn = DriverManager.getConnection("jdbc:sqlserver://javacontacts.database.windows.net:1433;database=ContactsDB;user=chastainM@javacontacts;password=Chastain.Marchildon");
 
             String sql = "SELECT * FROM Room WHERE Vacant = Vacant";
 
             s = conn.createStatement();
             rs=s.executeQuery(sql);
-                while(rs.next()){
-                    Room newRoom = new Room(rs.getString("Name"),rs.getInt("RoomNumber"),rs.getInt("Beds"),rs.getString("Vacant"));
-                    rooms.add(newRoom);
+               
+            while(rs.next()){
+                 Room newRoom = new Room(rs.getString("Name"),rs.getInt("RoomNumber"),rs.getInt("Beds"),rs.getString("Vacant"),rs.getString("Address"));
+                    rooms.add(newRoom);   
                 }
-                for(Room room : rooms)
-                {
-                  roomComboBox.getItems().add(room.getName());  
-                }
+            roomTable.getItems().addAll(rooms);
+  
         } 
         catch(Exception e){
            System.err.print(e.getMessage()); 
@@ -79,6 +88,28 @@ public class RoomManagerController implements Initializable {
             if(rs != null)
                 rs.close();
         }
+        //Filtering the populated TableView. Tutorial found at http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
+        FilteredList<Room> filterRooms = new FilteredList<>(rooms,p->true);
+        roomSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterRooms.setPredicate(room -> {
+                if (newValue == null || newValue.isEmpty()) 
+                {
+                    return true;
+                }
+                String lowerCaseSearch = newValue.toLowerCase();
+
+                if(room.getAddress().toLowerCase().contains(lowerCaseSearch))
+                {
+                    return true; 
+                }
+                else if (room.getName().toLowerCase().contains(lowerCaseSearch)) 
+                {
+                    return true; 
+                }
+                return false; 
+            });
+        });
+        roomTable.setItems(filterRooms);            
     }
     
     public void bookRoom() throws SQLException
@@ -88,7 +119,7 @@ public class RoomManagerController implements Initializable {
         try{
           
             conn = DriverManager.getConnection("jdbc:sqlserver://javacontacts.database.windows.net:1433;database=ContactsDB;user=chastainM@javacontacts;password=Chastain.Marchildon");
-            String sql = "UPDATE Room SET Vacant = 'Booked' WHERE RoomId = " + this.roomComboBox.getValue();
+            String sql = "UPDATE Room SET Vacant = 'Booked' WHERE RoomNumber = " + this.roomTable.getSelectionModel().getSelectedItem().getRoomNumber();
             ps = conn.prepareStatement(sql);
             
             ps.executeUpdate();
@@ -104,6 +135,7 @@ public class RoomManagerController implements Initializable {
             if(ps != null)
                 ps.close();
         }
+        
     }
  
 }

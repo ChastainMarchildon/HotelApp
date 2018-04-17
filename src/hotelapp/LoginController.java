@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -32,7 +33,7 @@ public class LoginController implements Initializable {
     
     @FXML   private TextField emailField;
     @FXML   private PasswordField passwordField;
-    @FXML   private Button loginButton;
+    @FXML   private Label loginLabel;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -73,6 +74,7 @@ public class LoginController implements Initializable {
         catch(Exception e)
                 {
                     System.err.println(e.getMessage());
+                    loginLabel.setText("Invalid Username or Password");
                 }
         finally
         {
