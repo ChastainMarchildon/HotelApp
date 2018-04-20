@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 import java.util.function.BinaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -40,6 +42,7 @@ public class RoomManagerController implements Initializable {
     @FXML   private TableColumn<Room, String> roomColumn;
     @FXML   private TableColumn<Room, String> addressColumn;
     @FXML   private TableView<Room> roomTable;
+    @FXML   private Label availableLabel;
     /**
      * Initializes the controller class.
      */
@@ -74,6 +77,7 @@ public class RoomManagerController implements Initializable {
                     rooms.add(newRoom);   
                 }
             roomTable.getItems().addAll(rooms);
+            availableLabel.setText(String.format("%d",rooms.size()));
   
         } 
         catch(Exception e){
@@ -89,27 +93,31 @@ public class RoomManagerController implements Initializable {
                 rs.close();
         }
         //Filtering the populated TableView. Tutorial found at http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
-        FilteredList<Room> filterRooms = new FilteredList<>(rooms,p->true);
+        FilteredList<Room> filterRooms = new FilteredList<>(rooms);
         roomSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filterRooms.setPredicate(room -> {
                 if (newValue == null || newValue.isEmpty()) 
                 {
+                    
                     return true;
                 }
                 String lowerCaseSearch = newValue.toLowerCase();
 
-                if(room.getAddress().toLowerCase().contains(lowerCaseSearch))
+                if(room.getAddress().toLowerCase().contains(lowerCaseSearch) || room.getName().toLowerCase().contains(lowerCaseSearch))
                 {
+                    long available = filterRooms.stream()
+                             .count();
+                              availableLabel.setText(String.format("%d",available));
                     return true; 
                 }
-                else if (room.getName().toLowerCase().contains(lowerCaseSearch)) 
-                {
-                    return true; 
-                }
+               
                 return false; 
             });
         });
-        roomTable.setItems(filterRooms);            
+        roomTable.setItems(filterRooms); 
+        
+       
+               
     }
     
     public void bookRoom() throws SQLException
@@ -143,7 +151,7 @@ public class RoomManagerController implements Initializable {
     {
         Integer fromDate = roomDate.getValue().getDayOfMonth();
         Integer toDate = roomDateTwo.getValue().getDayOfMonth();
-        float total = (toDate - fromDate)*110;
+        double total = (toDate - fromDate)*110;
         
         calculatedLabel.setText(String.format("%10.2f", total));
     }

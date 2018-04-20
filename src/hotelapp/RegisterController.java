@@ -44,6 +44,7 @@ public class RegisterController implements Initializable {
         else{
             try{
                 Guest newGuest = new Guest(this.nameField.getText(),this.passwordField.getText(),this.emailField.getText());
+                
                 newGuest.setSalt();
                 newGuest.hashPassword(newGuest.getPassword(),newGuest.getSalt());
                 newGuest.insertIntoDB();
